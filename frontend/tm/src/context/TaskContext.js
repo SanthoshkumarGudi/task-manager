@@ -3,6 +3,8 @@ import axios from "axios";
 
 const TaskContext = createContext();
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [filters, setFilters] = useState({ status: "", priority: "" }); // Filters state
@@ -10,7 +12,7 @@ export const TaskProvider = ({ children }) => {
 
   const addTask = async (taskData) => {
     try {
-      const res = await axios.post("https://task-manager-4gv5.onrender.com/api/tasks", taskData, {
+      const res = await axios.post(API_BASE_URL+"/api/tasks", taskData, {
         headers: { Authorization: token },
       });
       setTasks((prevTasks) => [...prevTasks, res.data]); // Add the new task to the state
@@ -23,7 +25,7 @@ export const TaskProvider = ({ children }) => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const res = await axios.get("https://task-manager-4gv5.onrender.com/api/tasks", {
+      const res = await axios.get(API_BASE_URL+"/api/tasks", {
         headers: { Authorization: token },
       });
       setTasks(res.data);
@@ -35,7 +37,7 @@ export const TaskProvider = ({ children }) => {
 
   const editTask = async (taskId, updatedData) => {
     try {
-      await axios.put(`https://task-manager-4gv5.onrender.com/api/tasks/${taskId}`, updatedData, {
+      await axios.put(`${API_BASE_URL}/api/tasks/${taskId}`, updatedData, {
         headers: { Authorization: token },
       });
       fetchTasks();
@@ -47,7 +49,7 @@ export const TaskProvider = ({ children }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`https://task-manager-4gv5.onrender.com/api/tasks/${taskId}`, {
+      await axios.delete(`${API_BASE_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: token },
       });
       fetchTasks();

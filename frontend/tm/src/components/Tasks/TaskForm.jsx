@@ -6,6 +6,8 @@ import TaskContext from "../../context/TaskContext";
 import AuthContext from "../../context/AuthContext";
 import { TextField, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const TaskForm = ({ taskToEdit, onClose }) => {
   const { fetchTasks, editTask } = useContext(TaskContext);
   const { token } = useContext(AuthContext);
@@ -25,7 +27,7 @@ const TaskForm = ({ taskToEdit, onClose }) => {
       if (taskToEdit) {
         await editTask(taskToEdit._id, taskData); // Update task
       } else {
-        await axios.post("https://task-manager-4gv5.onrender.com/api/tasks", taskData, {
+        await axios.post(API_BASE_URL+"/api/tasks", taskData, {
           headers: { Authorization: token },
         }); // Create new task
         fetchTasks();
