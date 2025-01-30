@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
 
   const login = async (email, password) => {
-    const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+    const res = await axios.post("https://task-manager-4gv5.onrender.com/api/auth/login", { email, password });
     setToken(res.data.token);
     setUser(res.data.user);
     localStorage.setItem("token", res.data.token);

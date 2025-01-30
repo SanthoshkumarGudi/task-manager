@@ -10,7 +10,7 @@ export const TaskProvider = ({ children }) => {
 
   const addTask = async (taskData) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/tasks", taskData, {
+      const res = await axios.post("https://task-manager-4gv5.onrender.com/api/tasks", taskData, {
         headers: { Authorization: token },
       });
       setTasks((prevTasks) => [...prevTasks, res.data]); // Add the new task to the state
@@ -23,7 +23,7 @@ export const TaskProvider = ({ children }) => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/tasks", {
+      const res = await axios.get("https://task-manager-4gv5.onrender.com/api/tasks", {
         headers: { Authorization: token },
       });
       setTasks(res.data);
@@ -35,7 +35,7 @@ export const TaskProvider = ({ children }) => {
 
   const editTask = async (taskId, updatedData) => {
     try {
-      await axios.put(`http://localhost:5000/api/tasks/${taskId}`, updatedData, {
+      await axios.put(`https://task-manager-4gv5.onrender.com/api/tasks/${taskId}`, updatedData, {
         headers: { Authorization: token },
       });
       fetchTasks();
@@ -47,7 +47,7 @@ export const TaskProvider = ({ children }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+      await axios.delete(`https://task-manager-4gv5.onrender.com/api/tasks/${taskId}`, {
         headers: { Authorization: token },
       });
       fetchTasks();
