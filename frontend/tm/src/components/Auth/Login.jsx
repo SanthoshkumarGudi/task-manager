@@ -1,15 +1,18 @@
 import { useState, useContext } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import AuthContext from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom"; // Import the navigate hook
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(email, password);
+    navigate("/dashboard");
   };
 
   return (
