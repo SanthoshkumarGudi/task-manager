@@ -16,30 +16,36 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // POST /api/tasks - Create a new task
+// Create a new task
 router.post("/", authMiddleware, async (req, res) => {
-  const { title, description, status, priority, dueDate } = req.body;
-
-  if (!title || !dueDate) {
-    return res.status(400).json({ error: "Title and Due Date are required" });
-  }
-
   try {
+    const { title, description, status, priority, dueDate } = req.body;
+
+    // Validate required fields
+    if (!title || !dueDate) {
+      return res.status(400).json({ error: "Title and Due Date are required." });
+    }
+
+    // Create a new task
     const newTask = new Task({
       title,
-      description,
+      description: description || "",
       status: status || "pending",
       priority: priority || "medium",
       dueDate,
-      user: req.user.id,
+      user: req.user.id, // Assume `authMiddleware` attaches `req.user`
     });
 
-    await newTask.save();
-    res.status(201).json(newTask);
-  } catch (err) {
-    console.error("Error creating task:", err);
-    res.status(500).json({ error: "Server error. Could not create task." });
+    const savedTask = await newTask.save();
+    res.status(201).json(savedTask);
+  } catch (error) {
+    console.error("Error creating task:", error.message);
+    res.status(500).json({ error: "Server error while creating task." });
   }
 });
+
+
+
 
 // PUT /api/tasks/:id - Update a task
 router.put("/:id", authMiddleware, async (req, res) => {

@@ -1,23 +1,28 @@
-import { useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import TaskContext from "../../context/TaskContext";
 import TaskCard from "./TaskCard";
-import TaskFilters from "./TaskFilters";
-import { Grid } from "@mui/material";
 
 const TaskList = () => {
-  const { tasks } = useContext(TaskContext);
-  const [filteredTasks, setFilteredTasks] = useState(tasks);
+  const { tasks, fetchTasks, filters } = useContext(TaskContext);
+
+  useEffect(() => {
+    fetchTasks(); // Fetch tasks when the component mounts
+  }, [fetchTasks]);
+
+  // Apply both status and priority filters
+  const filteredTasks = tasks.filter((task) => {
+    const matchesStatus = filters.status ? task.status === filters.status : true;
+    const matchesPriority = filters.priority ? task.priority === filters.priority : true;
+    return matchesStatus && matchesPriority; // Match both conditions
+  });
 
   return (
-    <div>
-      <TaskFilters setFilteredTasks={setFilteredTasks} />
-      <Grid container spacing={2}>
-        {filteredTasks.map((task) => (
-          <Grid item xs={12} sm={6} md={4} key={task._id}>
-            <TaskCard task={task} />
-          </Grid>
-        ))}
-      </Grid>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", marginTop: "20px" }}>
+      {filteredTasks.length > 0 ? (
+        filteredTasks.map((task) => <TaskCard key={task._id} task={task} />)
+      ) : (
+        <p>No tasks match the selected filters. Add some tasks or adjust your filters!</p>
+      )}
     </div>
   );
 };

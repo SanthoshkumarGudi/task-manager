@@ -1,5 +1,5 @@
+import React, { useContext, useState } from "react";
 import { Card, CardContent, Typography, Button, CardActions } from "@mui/material";
-import { useContext, useState } from "react";
 import TaskContext from "../../context/TaskContext";
 import TaskForm from "./TaskForm";
 
@@ -9,7 +9,7 @@ const TaskCard = ({ task }) => {
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      deleteTask(task._id);
+      deleteTask(task._id); // Call deleteTask function with the task ID
     }
   };
 

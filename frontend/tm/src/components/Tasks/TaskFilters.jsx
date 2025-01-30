@@ -1,63 +1,52 @@
-import { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { FormControl, InputLabel, Select, MenuItem, Box, Typography } from "@mui/material";
 import TaskContext from "../../context/TaskContext";
-import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
 
-const TaskFilters = ({ setFilteredTasks }) => {
-  const { tasks } = useContext(TaskContext);
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
+const TaskFilters = () => {
+  const { filters, setFilters } = useContext(TaskContext);
 
-  const handleFilterChange = () => {
-    let filtered = tasks;
+  const handleStatusChange = (e) => {
+    setFilters((prev) => ({ ...prev, status: e.target.value }));
+  };
 
-    if (status) {
-      filtered = filtered.filter((task) => task.status === status);
-    }
-
-    if (priority) {
-      filtered = filtered.filter((task) => task.priority === priority);
-    }
-
-    setFilteredTasks(filtered);
+  const handlePriorityChange = (e) => {
+    setFilters((prev) => ({ ...prev, priority: e.target.value }));
   };
 
   return (
-    <Grid container spacing={2} style={{ marginBottom: "20px" }}>
-      <Grid item xs={6} sm={4} md={3}>
-        <FormControl fullWidth>
-          <InputLabel>Status</InputLabel>
-          <Select
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              handleFilterChange();
-            }}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="completed">Completed</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-
-      <Grid item xs={6} sm={4} md={3}>
-        <FormControl fullWidth>
-          <InputLabel>Priority</InputLabel>
-          <Select
-            value={priority}
-            onChange={(e) => {
-              setPriority(e.target.value);
-              handleFilterChange();
-            }}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="low">Low</MenuItem>
-            <MenuItem value="medium">Medium</MenuItem>
-            <MenuItem value="high">High</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-    </Grid>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        backgroundColor: "#f5f5f5",
+        borderRadius: "10px",
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+        Filter Tasks:
+      </Typography>
+      <FormControl sx={{ minWidth: 150 }}>
+        <InputLabel>Status</InputLabel>
+        <Select value={filters.status} onChange={handleStatusChange}>
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="pending">Pending</MenuItem>
+          <MenuItem value="completed">Completed</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={{ minWidth: 150 }}>
+        <InputLabel>Priority</InputLabel>
+        <Select value={filters.priority} onChange={handlePriorityChange}>
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="low">Low</MenuItem>
+          <MenuItem value="medium">Medium</MenuItem>
+          <MenuItem value="high">High</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
   );
 };
 

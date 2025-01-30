@@ -1,18 +1,27 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useCallback } from "react";
 import axios from "axios";
-import AuthContext from "./AuthContext";
 
 const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
-  const { token } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
+  const [filters, setFilters] = useState({ status: "", priority: "" }); // Filters state
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (token) fetchTasks();
-  }, [token]);
+  const addTask = async (taskData) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/tasks", taskData, {
+        headers: { Authorization: token },
+      });
+      setTasks((prevTasks) => [...prevTasks, res.data]); // Add the new task to the state
+    } catch (error) {
+      console.error("Error adding task:", error.response?.data || error.message);
+      alert(error.response?.data?.error || "Failed to save task.");
+    }
+  };
+  
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/tasks", {
         headers: { Authorization: token },
@@ -20,30 +29,19 @@ export const TaskProvider = ({ children }) => {
       setTasks(res.data);
     } catch (error) {
       console.error("Error fetching tasks:", error.response?.data || error.message);
+      alert("Failed to fetch tasks.");
     }
-  };
-
-  const addTask = async (taskData) => {
-    try {
-      const res = await axios.post("http://localhost:5000/api/tasks", taskData, {
-        headers: { Authorization: token },
-      });
-      setTasks((prevTasks) => [...prevTasks, res.data]);
-    } catch (error) {
-      console.error("Error adding task:", error.response?.data || error.message);
-    }
-  };
+  }, [token]);
 
   const editTask = async (taskId, updatedData) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}`, updatedData, {
+      await axios.put(`http://localhost:5000/api/tasks/${taskId}`, updatedData, {
         headers: { Authorization: token },
       });
-      setTasks((prevTasks) =>
-        prevTasks.map((task) => (task._id === taskId ? res.data : task))
-      );
+      fetchTasks();
     } catch (error) {
       console.error("Error updating task:", error.response?.data || error.message);
+      alert("Failed to update the task.");
     }
   };
 
@@ -52,14 +50,15 @@ export const TaskProvider = ({ children }) => {
       await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
         headers: { Authorization: token },
       });
-      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+      fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error.response?.data || error.message);
+      alert("Failed to delete the task.");
     }
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, fetchTasks, addTask, editTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, fetchTasks, editTask, deleteTask, filters, setFilters }}>
       {children}
     </TaskContext.Provider>
   );
