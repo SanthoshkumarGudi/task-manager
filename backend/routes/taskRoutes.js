@@ -2,7 +2,8 @@ const express = require("express");
 const Task = require("../models/Task");
 const authMiddleware = require("../middleware/authMiddleware");
 
-const router = express.Router();
+const 
+router = express.Router();
 
 // GET /api/tasks - Fetch all tasks for the authenticated user
 router.get("/", authMiddleware, async (req, res) => {
@@ -30,7 +31,7 @@ router.post("/", authMiddleware, async (req, res) => {
     const newTask = new Task({
       title,
       description: description || "",
-      status: status || "pending",
+      status: status,
       priority: priority || "medium",
       dueDate,
       user: req.user.id, // Assume `authMiddleware` attaches `req.user`

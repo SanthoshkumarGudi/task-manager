@@ -3,16 +3,18 @@ import { Button, Modal, Box } from "@mui/material";
 import TaskFilters from "../components/Tasks/TaskFilters";
 import TaskList from "../components/Tasks/TaskList";
 import TaskForm from "../components/Tasks/TaskForm";
+import { useContext } from "react";
+import AuthContext from "../components/Auth/context/AuthContext";
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {user}= useContext(AuthContext)
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Dashboard</h1>
+      <h2>Welcome {user.name}</h2>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
         <TaskFilters />
         <Button

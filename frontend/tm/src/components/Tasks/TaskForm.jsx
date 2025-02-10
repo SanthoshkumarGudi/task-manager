@@ -2,8 +2,8 @@
 import axios from "axios";
 
 import { useState, useContext, useEffect } from "react";
-import TaskContext from "../../context/TaskContext";
-import AuthContext from "../../context/AuthContext";
+import TaskContext from "../Auth/context/TaskContext";
+import AuthContext from "../Auth/context/AuthContext";
 import { TextField, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
@@ -11,7 +11,6 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const TaskForm = ({ taskToEdit, onClose }) => {
   const { fetchTasks, editTask } = useContext(TaskContext);
   const { token } = useContext(AuthContext);
-
   const [title, setTitle] = useState(taskToEdit ? taskToEdit.title : "");
   const [description, setDescription] = useState(taskToEdit ? taskToEdit.description : "");
   const [status, setStatus] = useState(taskToEdit ? taskToEdit.status : "pending");
@@ -50,6 +49,7 @@ const TaskForm = ({ taskToEdit, onClose }) => {
         <Select value={status} onChange={(e) => setStatus(e.target.value)}>
           <MenuItem value="pending">Pending</MenuItem>
           <MenuItem value="completed">Completed</MenuItem>
+          <MenuItem value="open">Open</MenuItem>
         </Select>
       </FormControl>
 

@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../Auth/context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);

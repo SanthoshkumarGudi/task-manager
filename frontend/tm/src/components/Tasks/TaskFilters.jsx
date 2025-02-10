@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { FormControl, InputLabel, Select, MenuItem, Box, Typography } from "@mui/material";
-import TaskContext from "../../context/TaskContext";
+import TaskContext from "../Auth/context/TaskContext";
 
 const TaskFilters = () => {
   const { filters, setFilters } = useContext(TaskContext);
@@ -35,6 +35,7 @@ const TaskFilters = () => {
           <MenuItem value="">All</MenuItem>
           <MenuItem value="pending">Pending</MenuItem>
           <MenuItem value="completed">Completed</MenuItem>
+          <MenuItem value="open">Completed</MenuItem>
         </Select>
       </FormControl>
       <FormControl sx={{ minWidth: 150 }}>

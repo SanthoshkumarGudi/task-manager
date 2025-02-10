@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "./context/AuthContext";
 import { useNavigate } from "react-router-dom"; // Import the navigate hook
 
 const Login = () => {

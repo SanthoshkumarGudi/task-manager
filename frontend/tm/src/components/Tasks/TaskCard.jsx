@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Card, CardContent, Typography, Button, CardActions } from "@mui/material";
-import TaskContext from "../../context/TaskContext";
+import TaskContext from "../Auth/context/TaskContext";
 import TaskForm from "./TaskForm";
 
 const TaskCard = ({ task }) => {
@@ -41,6 +41,7 @@ const TaskCard = ({ task }) => {
               color="primary"
               size="small"
               onClick={() => setIsEditing(true)}
+             
             >
               Edit
             </Button>
